@@ -43,7 +43,7 @@ You will see the interface to start logging your data.
 
 # How It Works
 
-1. Fill in the form fields (Name, Date, Category, Amount, Notes, etc.).
+1. Fill in the form fields.
 2. Click “Save” — the record is stored in `fishing_data.xlsx`.
 3. You can view all records directly in the app.
 4. Use the sidebar to:
