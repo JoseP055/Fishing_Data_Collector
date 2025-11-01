@@ -11,3 +11,19 @@ COLUMNS = ["Catch_id","Date","Time","Country","State","Weather","Temperature_in_
 st.set_page_config(page_title="Data Capture → Excel", page_icon="📗", layout="centered")
 st.title("Data Capture → Excel")
 
+# ===== Helpers =====
+def ensure_file(path: Path):
+    if not path.exists():
+        pd.DataFrame(columns=COLUMNS).to_excel(path, index=False, engine="openpyxl")
+
+def load_df(path: Path) -> pd.DataFrame:
+    ensure_file(path)
+    try:
+        return pd.read_excel(path, engine="openpyxl")
+    except Exception:
+        return pd.DataFrame(columns=COLUMNS)
+
+def save_df(path: Path, df: pd.DataFrame):
+    df.to_excel(path, index=False, engine="openpyxl")
+
+
