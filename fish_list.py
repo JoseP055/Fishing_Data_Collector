@@ -1,0 +1,30 @@
+
+fish_list = [
+    "Butterfly Peacock Bass", "Largemouth Bass", "Orinoco Peacock Bass", "Red Peacock Bass", "Rock Bass", "Shoal Bass", "Smallmouth Bass", "Speckled Peacock Bass", "Spotted Bass", "Striped Bass", "White Bass",
+    "Amur Bitterling", "Blue Bream", "California Roach", "Common Bream", "Common Roach", "Common Rudd", "European Bitterling", "Ide", "Silver Bream", "White-Eye Bream",
+    "Asp", "Bighead Carp", "Bigmouth Buffalo", "Black Sea Roach", "Chub", "Common Barbel", "Common Bleak", "Common Carp", "Common Dace", "Common Nase", "Crucian Carp", "Ghost Carp", "Golden Tench", "Grass Carp", "Hybrid F1 Carp", "Leather Carp", "Longnose Sucker", "Mirror Carp", "Prussian Carp", "Silver Carp", "Smallmouth Buffalo", "Tench", "White Sucker", "Ziege",
+    "African Big Eye Catfish", "African Sharptooth Catfish", "Black Bullhead Catfish", "Blue Catfish", "Brown Bullhead Catfish", "Channel Catfish", "Flathead Catfish", "Flatwhiskered Catfish", "Gafftopsail Catfish", "Gilded Catfish", "Giraffe Catfish", "Kamba Catfish", "Piraiba", "Redtail Catfish", "Ripsaw Catfish", "Sorubim Catfish", "Vundu Catfish", "Wels Catfish", "White Catfish",
+    "Black Crappie", "White Crappie",
+    "Black Drum", "Freshwater Drum", "Red Drum", "Silver Croaker",
+    "Alligator Gar", "Florida Gar", "Longnose Gar", "Spotted Gar",
+    "Monkey Goby", "Round Goby",
+    "Black Marlin", "Indo-Pacific King Mackerel", "Japanese Jack Mackerel", "Narrow-Barred Mackerel", "Sailfish", "Striped Bonito", "Striped Marlin", "Swordfish", "Wahoo",
+    "Bluegill", "Green Sunfish", "Pumpkinseed", "Redbreast Sunfish", "Redear Sunfish", "Warmouth",
+    "Eurasian Ruffe", "European Perch", "Nile Perch", "Sauger", "Walleye", "Yellow Perch", "Zander",
+    "Chain Pickerel", "Clear Muskie", "Grass Pickerel", "Muskellunge", "Northern Pike", "Redfin Pickerel", "Tiger Muskie",
+    "Red-Bellied Piranha", "Redeye Piranha", "Tambaqui",
+    "Atlantic Salmon", "Baikal Omul", "Chinook Salmon", "Chum Salmon", "Coho Salmon", "Humpback Whitefish", "Lake Whitefish", "Pink Salmon", "Siberian Taimen", "Sockeye Salmon",
+    "Blacktail Shiner", "Bluntnose Minnow", "Common Shiner", "Golden Shiner", "Gudgeon", "Lake Chub",
+    "Beluga", "Lake Sturgeon", "Sterlet", "White Sturgeon",
+    "Arctic Grayling", "Brook Trout", "Brown Trout", "Bull Trout", "Colorado Golden Trout", "Creek Brown Trout", "Cutthroat Trout", "Dolly Varden", "European Brown Trout", "European Grayling", "Lake Trout", "Lenok", "Marble Trout", "Oregon Redband Trout", "Rainbow Trout", "Splake", "Steelhead", "Tiger Trout",
+    "Albacore", "Bigeye Tuna", "Dogtooth Tuna", "Pacific Bluefin Tuna", "Skipjack Tuna", "Yellowfin Tuna",
+    "Bigfin Reef Squid", "Giant Grouper", "Giant Trevally", "Greater Amberjack", "Green Jobfish", "Japanese Amberjack", "Japanese Anchovy", "Mahi-Mahi", "Ruby Snapper",
+    "Alaska Blackfish", "American Gizzard Shad", "American Shad", "Azov Shad", "Bonefish", "Bowfin", "Burbot", "Chinese Sleeper", "Common Minnow", "Common Snook", "European Eel", "European Flounder", "European Weatherfish", "Permit", "Southern Flounder", "Tarpon", "Thicklip Grey Mullet",
+    "Apapa", "Arapaima", "Banded Aracu", "Biara", "Bicuda", "Brycon", "Bull Shark", "Electric Eel", "Flag-Tailed Prochilodus", "Jacunda", "Oscar", "Payara", "Red Tail Barracuda", "Silver Arowana", "Spotted Aracu", "Trahira",
+    "African Pike", "African Tigerfish", "Banded Tilapia", "Bulldog Fish", "Congo Yellowfish", "Cornish Jack", "Elephant Fish", "Goliath Tigerfish", "Nile Tilapia", "Purple Labeo", "Rednose Labeo",
+    "Akkorokamui", "Albino Yeti Gar", "Antlered Salmon", "Armored Bighead", "Barbel-Ghost", "Black Vampire Gar", "Bluegill Skeleton", "Buzzman Tambaqui", "Carp-Ghost", "Catfish-Demon", "Crystal Burbot", "Dingonek", "Double Head Eel", "Fierce Muskie", "Fire Muskie", "Frankenfish", "Furry Trout", "Ghost Pike", "Grass Carp-Ghost", "Green Ogre Gar", "Hellish Muskie", "Hybrid Carp-Ghost", "Largemouth Bass-Phantom", "Leather Carp-Ghost", "Leprechaun Fish", "Mirror Carp-Ghost", "Northern Snakehead", "Prussian Carp-Ghost", "Rowdy Bass", "Slide Rock Bolter", "Smallmouth Bass-Phantom", "Steelhead-Phantom", "Sturgeon-Demon", "Tarpon-Demon", "Trout-Ghost", "Trout-Phantom", "Trout-Skeleton", "Vampire Biara", "Vampire Payara", "Vampire Trahira", "White Carp-Ghost",
+    "Historic Black Crappie", "Historic Brown Trout", "Historic Bull Trout", "Historic Butterfly Peacock Bass", "Historic Chain Pickerel", "Historic Chinook Salmon", "Historic Colorado Golden Trout", "Historic Cutthroat Trout", "Historic Grass Pickerel", "Historic Largemouth Bass", "Historic Muskie", "Historic Northern Pike", "Historic Rainbow Trout", "Historic Smallmouth Bass", "Historic Spotted Bass", "Historic Steelhead Trout", "Historic Striped Bass", "Historic Walleye", "Historic White Bass", "Historic White Crappie",
+    "Blue Bandit Aracu", "Blue Dunce Crappie", "Blue Foolish Goby", "Clumsy Krampus Eel", "Crumbling Krampus Payara", "Decorated Alligator Gar", "Decorated Asp", "Decorated Chain Pickerel", "Decorated Channel Catfish", "Decorated Chum Salmon", "Decorated Colorado Golden Trout", "Decorated Cutthroat Trout", "Decorated Ghost Carp", "Decorated Lake Trout", "Decorated Longnose Gar", "Decorated Marble Trout", "Decorated Prussian Carp", "Decorated Red Drum", "Decorated Silver Carp", "Decorated Tiger Muskie", "Decorated White Crappie", "Decorated White Sturgeon", "Decorated Zander", "Green Bandit Aracu", "Green Dunce Crappie", "Green Foolish Goby", "Red Bandit Aracu", "Red Dunce Crappie", "Red Foolish Goby", "Unlucky Krampus Tarpon",
+    "Albino Blackfish", "Black Whisker", "Carp Colossus", "Cyber Piranha", "Dendrofin", "Eel Cannibal", "Eldergar", "Elusive Arapaima", "Fighter Shark", "Ghost Peacock Bass", "Gourmet Bass", "Grayling Wrestler", "Grouperzilla", "Mad-Eye Buffalo", "Mega Piranha", "Mighty M'Benga", "Muskie Golem", "Perch Bully", "Pikeslasher", "Rainbow Outlaw", "Striped Blade", "Sturgeon Leviathan", "Taimen-Khan", "Terror Tarpon", "Thorn-Ripper", "Tyrannotrout", "Voodoo Fish", "Wailing Catfish", "Zombie Cat"
+]
+
