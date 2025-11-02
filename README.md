@@ -15,7 +15,7 @@ Fishing Data Collector provides a clean and intuitive interface to log fishing r
 # Installation
 ## 1. Clone this repository
 ```bash
-git clone https://github.com/jospaba12/Fishing_Data_Collector.git
+git clone https://github.com/JoseP055/Fishing_Data_Collector.git
 cd Fishing_Data_Collector
 ```
 # (Optional) Create a virtual environment
