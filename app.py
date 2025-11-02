@@ -56,18 +56,18 @@ if "uploader_ver" not in st.session_state:
     st.session_state["uploader_ver"] = 0
 
 with st.sidebar:
-    st.header("Configuration")
+    st.header("Settings")
     st.write("Note: The system always uses `fishing_data.xlsx` as the **unique master file**.")
 
     st.markdown("---")
-    st.subheader("Replace master file")
+    st.subheader("Replace Master File")
     up = st.file_uploader(
-        "Replace with compatible .xlsx",
+        "Replace with a compatible .xlsx",
         type=["xlsx"],
         key=f"master_uploader_{st.session_state['uploader_ver']}"
     )
 
-    if up and st.button("Confirm replace", key="replace_btn"):
+    if up and st.button("Confirm Replacement", key="replace_btn"):
         try:
             incoming = pd.read_excel(up, engine="openpyxl")
             missing = [c for c in COLUMNS if c not in incoming.columns]
@@ -85,11 +85,11 @@ with st.sidebar:
                     st.error("Replace failed: row count mismatch.")
         except Exception as e:
             st.error(f"Unable to upload: {e}")
-    # Button to download a copy of the master file
+    # Button to Download a Copy of the Master File
     try:
         with open(DATA_PATH, "rb") as f:
             st.download_button(
-                label="Download a copy of the master file",
+                label="Download a Copy of the Master File",
                 data=f,
                 file_name="fishing_data_copy.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -106,11 +106,11 @@ with st.sidebar:
     st.markdown("---")
     st.subheader("⚠️ Danger Zone")
 
-    with st.expander("Clear all master file data", expanded=False):
+    with st.expander("Clear All Master File Data", expanded=False):
         st.warning("This action will permanently delete all fishing records from `fishing_data.xlsx`.")
-        admin_pass = st.text_input("Enter admin password to confirm:", type="password", key="admin_clear")
+        admin_pass = st.text_input("Enter the admin password to confirm:", type="password", key="admin_clear")
     
-        if st.button("Confirm and Clear Data"):
+        if st.button("Confirm and Clear"):
             if admin_pass == "admin":  
                 save_df(DATA_PATH, pd.DataFrame(columns=COLUMNS))
                 st.success("`fishing_data.xlsx` has been successfully recreated and cleared.")
@@ -131,7 +131,7 @@ with st.form("capture_form", clear_on_submit=False):
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.subheader("Datetime and Location")
+        st.subheader("Date/Time & Location")
         use_id = st.text_input("Catch ID", value=str(next_id), disabled=True, help="Auto-incremented, read-only.")
         date = st.date_input("Date", value=last_date)
         time = st.time_input("Time", value=datetime.now().replace(second=0, microsecond=0).time())
@@ -139,7 +139,7 @@ with st.form("capture_form", clear_on_submit=False):
         state = st.selectbox("State/Province", ["Texas", "Missouri", "New York", "Colorado", "North Carolina", "Oregon", "Florida", "Louisiana", "Michigan", "California", "Alaska", "Mississippi", "Alberta", "Loreto", "Beni", "Amazonas", "Central Bohemia", "North Holland", "Lazio", "Bavaria", "Dnipro", "England", "Île-de-France", "Pool", "Khövsgöl", "Wakayama", "Kaafu"])
 
     with col2:
-        st.subheader("Time conditions")
+        st.subheader("Weather & Conditions")
         weather = st.selectbox("Weather", ["Sunny","Partly cloudy","Cloudy","Rain","Storm","Windy","Other"])
         temp_air = st.number_input("Air temperature (°C)", min_value=-50.0, max_value=60.0, step=0.1, format="%.1f")
         temp_water = st.number_input("Water temperature (°C)", min_value=-5.0, max_value=40.0, step=0.1, format="%.1f")
@@ -147,12 +147,12 @@ with st.form("capture_form", clear_on_submit=False):
         pressure = st.number_input("Atmospheric pressure (hPa)", min_value=850.0, max_value=1100.0, step=0.1, format="%.1f")
 
     with col3:
-        st.subheader("Method and Fish data")
+        st.subheader("Method & Fish Data")
         method = st.selectbox("Fishing method", ["Spinning", "Casting", "Float", "Bottom", "Other"])
-        fish_name = st.selectbox("Fish name",options=fish_list,index=fish_list.index(last_fish) if last_fish in fish_list else 0)
-        fish_weight = st.number_input("Fish weight (kg)", min_value=0.0, max_value=1000.0, step=0.01, format="%.2f")
-        fish_length = st.number_input("Fish length (cm)", min_value=0.0, max_value=1000.0, step=0.1, format="%.2f")
-        fish_price = st.number_input("Fish sell price", min_value=1, max_value=1_000_000, step=1)
+        fish_name = st.selectbox("Fish Name",options=fish_list,index=fish_list.index(last_fish) if last_fish in fish_list else 0)
+        fish_weight = st.number_input("Fish Weight (kg)", min_value=0.0, max_value=1000.0, step=0.01, format="%.2f")
+        fish_length = st.number_input("Fish Length (cm)", min_value=0.0, max_value=1000.0, step=0.1, format="%.2f")
+        fish_price = st.number_input("Sale Price", min_value=1, max_value=1_000_000, step=1)
 
     submitted = st.form_submit_button(f"Save Catch #{next_id}")
 
@@ -166,7 +166,7 @@ if submitted:
     if not method or not str(method).strip():
         errors.append("Fishing method is required.")
     if not fish_name or not str(fish_name).strip():
-        errors.append("Fish name is required.")
+        errors.append("Fish Name is required.")
 
     country_states = {
         "United States": {"Texas","Missouri","New York","Colorado","North Carolina","Oregon","Florida","Louisiana","Michigan","California","Alaska","Mississippi"},
@@ -204,7 +204,7 @@ if submitted:
     if fish_length <= 0:
         errors.append("Fish length must be greater than 0 cm.")
     if fish_price < 1:
-        errors.append("Fish sell price must be at least 1.")
+        errors.append("Sale Price must be at least 1.")
 
     if fish_list and fish_name not in fish_list:
         errors.append("Fish name must be one from the list.")
@@ -249,14 +249,14 @@ if submitted:
 ensure_file(DATA_PATH)
 try:
     df_show = pd.read_excel(DATA_PATH, engine="openpyxl")
-    st.subheader("Actual Fishing Registers")
+    st.subheader("Current Fishing Records")
     st.dataframe(df_show, use_container_width=True)
 except Exception as e:
-    st.warning(f"File can not be readed: {e}")
+    st.warning(f"File cannot be read: {e}")
 
 # ===== Rights and License =====
 st.markdown("---")
-st.subheader("Open Source Project – Fishing Data Collector")
+st.subheader("Open-Source Project — Fishing Data Collector")
 st.caption("""
 Developed by **Jose Pablo Barrantes Jiménez**  
 © 2025 Jose Pablo Barrantes Jiménez  
