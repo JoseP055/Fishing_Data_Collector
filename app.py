@@ -72,10 +72,7 @@ with st.sidebar:
         except Exception as e:
             st.error(f"Unable to upload Excel file: {e}")
 
-    # Button to clear or recreate the master file
-    if st.button("Clear all master file data"):
-        save_df(DATA_PATH, pd.DataFrame(columns=COLUMNS))
-        st.success("`fishing_data.xlsx` has been successfully recreated.")
+    
 
     # Button to download a copy of the master file
     try:
@@ -94,6 +91,24 @@ with st.sidebar:
         "Use this download option only for reference copies."
     )
 
+    # ===== Button to clear or recreate the master file =====
+    st.markdown("---")
+    st.subheader("⚠️ Danger Zone")
+
+    with st.expander("Clear all master file data", expanded=False):
+        st.warning("This action will permanently delete all fishing records from `fishing_data.xlsx`.")
+        admin_pass = st.text_input("Enter admin password to confirm:", type="password", key="admin_clear")
+    
+        if st.button("Confirm and Clear Data"):
+            if admin_pass == "admin":  
+                save_df(DATA_PATH, pd.DataFrame(columns=COLUMNS))
+                st.success("`fishing_data.xlsx` has been successfully recreated and cleared.")
+            elif not admin_pass.strip():
+                st.error("Please enter the admin password before confirming.")
+            else:
+                st.error("Incorrect password. Action denied.")
+
+                
 # Load master file and find the id
 df_master = load_df(DATA_PATH)
 next_id = get_next_id(df_master)
@@ -106,7 +121,7 @@ with st.form("capture_form", clear_on_submit=False):
 
     with col1:
         st.subheader("Datetime and Location")
-        st.text_input("Catch ID", value=str(next_id), disabled=True, help="Auto-incremented, read-only.")
+        use_id = st.text_input("Catch ID", value=str(next_id), disabled=True, help="Auto-incremented, read-only.")
         date = st.date_input("Date", value=last_date)
         time = st.time_input("Time", value=datetime.now().replace(second=0, microsecond=0).time())
         country = st.selectbox("Country", ["United States", "Canada", "Peru", "Bolivia", "Brazil", "Czech Republic", "Netherlands", "Italy", "Germany", "Ukraine", "United Kingdom", "France", "Republic of the Congo", "Mongolia", "Japan", "Maldives"])
@@ -129,3 +144,93 @@ with st.form("capture_form", clear_on_submit=False):
         fish_price = st.number_input("Fish sell price", min_value=1, max_value=1_000_000, step=1)
 
     submitted = st.form_submit_button(f"Save Catch #{next_id}")
+
+if submitted:
+    errors = []
+
+    if not country or not str(country).strip():
+        errors.append("Country is required.")
+    if not state or not str(state).strip():
+        errors.append("State/Province is required.")
+    if not method or not str(method).strip():
+        errors.append("Fishing method is required.")
+    if not fish_name or not str(fish_name).strip():
+        errors.append("Fish name is required.")
+
+    country_states = {
+        "United States": {"Texas","Missouri","New York","Colorado","North Carolina","Oregon","Florida","Louisiana","Michigan","California","Alaska","Mississippi"},
+        "Canada": {"Alberta"},
+        "Peru": {"Loreto"},
+        "Bolivia": {"Beni"},
+        "Brazil": {"Amazonas"},
+        "Czech Republic": {"Central Bohemia"},
+        "Netherlands": {"North Holland"},
+        "Italy": {"Lazio"},
+        "Germany": {"Bavaria"},
+        "Ukraine": {"Dnipro"},
+        "United Kingdom": {"England"},
+        "France": {"Île-de-France"},
+        "Republic of the Congo": {"Pool"},
+        "Mongolia": {"Khövsgöl"},
+        "Japan": {"Wakayama"},
+        "Maldives": {"Kaafu"},
+    }
+    if country in country_states and state not in country_states[country]:
+        errors.append(f"‘{state}’ does not belong to ‘{country}’. Please pick a valid State/Province for that country.")
+
+    if temp_water > 40:
+        errors.append("Water temperature should be ≤ 40 °C.")
+    if temp_air < -50 or temp_air > 60:
+        errors.append("Air temperature out of allowed range (-50 to 60 °C).")
+    if wind_ms > 60 or wind_ms < 0:
+        errors.append("Wind (m/s) out of allowed range (0 to 60 m/s).")
+    if pressure < 850 or pressure > 1100:
+        errors.append("Atmospheric pressure out of allowed range (850–1100 hPa).")
+
+
+    if fish_weight <= 0:
+        errors.append("Fish weight must be greater than 0 kg.")
+    if fish_length <= 0:
+        errors.append("Fish length must be greater than 0 cm.")
+    if fish_price < 1:
+        errors.append("Fish sell price must be at least 1.")
+
+    if fish_list and fish_name not in fish_list:
+        errors.append("Fish name must be one from the list.")
+
+    if errors:
+        st.error("Please fix the following issues before saving:")
+        for e in errors:
+            st.markdown(f"- {e}")
+        st.stop()
+    else:
+        df = load_df(DATA_PATH)
+        use_id_int = int(next_id)
+        new_row = {
+        "Catch_id": use_id_int,
+        "Date": date,
+        "Time": time.strftime("%H:%M"),
+        "Country": country,
+        "State": state,
+        "Weather": weather,
+        "Temperature_in_Celsius": temp_air,
+        "Water_temperature_in_Celsius": temp_water,
+        "Wind_in_m/s": wind_ms,
+        "Atmospheric_pressure_in_hPa": pressure,
+        "Fishing_method": method,
+        "Fish_name": fish_name,
+        "Fish_weight_in_kg": fish_weight,
+        "Fish_length_in_cm": fish_length,
+        "Fish_sell_price": fish_price / 10
+        }
+        new_entry = pd.DataFrame([new_row])
+        new_entry = new_entry[[col for col in COLUMNS if col in new_entry.columns]]
+
+        if df is None or df.empty:
+            df = new_entry
+        else:
+            df = pd.concat([df, new_entry], ignore_index=True)
+        save_df(DATA_PATH, df)
+        st.success(f"Catch #{next_id} validated successfully! Saving…")
+        st.rerun()
+
