@@ -52,28 +52,39 @@ def get_last_date(df: pd.DataFrame):
         return date.today()
 
 # ===== Sidebar: Master File Management =====
+if "uploader_ver" not in st.session_state:
+    st.session_state["uploader_ver"] = 0
+
 with st.sidebar:
     st.header("Configuration")
     st.write("Note: The system always uses `fishing_data.xlsx` as the **unique master file**.")
 
-    # Upload a new Excel file to replace the master
-    uploaded_file = st.file_uploader("Replace the master file with a compatible Excel file", type=["xlsx"])
-    if uploaded_file is not None:
+    st.markdown("---")
+    st.subheader("Replace master file")
+    up = st.file_uploader(
+        "Replace with compatible .xlsx",
+        type=["xlsx"],
+        key=f"master_uploader_{st.session_state['uploader_ver']}"
+    )
+
+    if up and st.button("Confirm replace", key="replace_btn"):
         try:
-            incoming = pd.read_excel(uploaded_file, engine="openpyxl")
-            missing_columns = [c for c in COLUMNS if c not in incoming.columns]
-            if missing_columns:
-                st.error(f"The uploaded file is not compatible. Missing columns: {missing_columns}")
+            incoming = pd.read_excel(up, engine="openpyxl")
+            missing = [c for c in COLUMNS if c not in incoming.columns]
+            if missing:
+                st.error(f"Missing columns: {missing}")
             else:
-                column_order = COLUMNS + [c for c in incoming.columns if c not in COLUMNS]
-                incoming = incoming[column_order]
-                save_df(DATA_PATH, incoming[COLUMNS])  # guarda solo columnas del maestro
-                st.success("Master file successfully replaced.")
+                incoming = incoming.reindex(columns=COLUMNS)
+                save_df(DATA_PATH, incoming)
+                df_check = load_df(DATA_PATH)
+                if len(df_check) == len(incoming):
+                    st.success(f"Replaced successfully: {len(df_check)} rows.")
+                    st.session_state["uploader_ver"] += 1
+                    st.rerun()
+                else:
+                    st.error("Replace failed: row count mismatch.")
         except Exception as e:
-            st.error(f"Unable to upload Excel file: {e}")
-
-    
-
+            st.error(f"Unable to upload: {e}")
     # Button to download a copy of the master file
     try:
         with open(DATA_PATH, "rb") as f:
@@ -108,7 +119,7 @@ with st.sidebar:
             else:
                 st.error("Incorrect password. Action denied.")
 
-                
+
 # Load master file and find the id
 df_master = load_df(DATA_PATH)
 next_id = get_next_id(df_master)
@@ -233,4 +244,28 @@ if submitted:
         save_df(DATA_PATH, df)
         st.success(f"Catch #{next_id} validated successfully! Saving…")
         st.rerun()
+
+# ===== Data View =====
+ensure_file(DATA_PATH)
+try:
+    df_show = pd.read_excel(DATA_PATH, engine="openpyxl")
+    st.subheader("Actual Fishing Registers")
+    st.dataframe(df_show, use_container_width=True)
+except Exception as e:
+    st.warning(f"File can not be readed: {e}")
+
+# ===== Rights and License =====
+st.markdown("---")
+st.subheader("Open Source Project – Fishing Data Collector")
+st.caption("""
+Developed by **Jose Pablo Barrantes Jiménez**  
+© 2025 Jose Pablo Barrantes Jiménez  
+
+This project is open source under the MIT License.  
+You are free to use, modify, and distribute this code as long as credit is given  
+to the original author: Jose Pablo Barrantes Jiménez.
+
+GitHub: [github.com/JoseP055](https://github.com/JoseP055)  
+LinkedIn: [linkedin.com/in/josepbarrantes](https://www.linkedin.com/in/josep55)
+""")
 
