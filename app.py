@@ -134,7 +134,7 @@ with st.form("capture_form", clear_on_submit=False):
         st.subheader("Date/Time & Location")
         use_id = st.text_input("Catch ID", value=str(next_id), disabled=True, help="Auto-incremented, read-only.")
         date = st.date_input("Date", value=last_date)
-        time = st.time_input("Time", value=datetime.now().replace(second=0, microsecond=0).time())
+        time = st.time_input("Time")
         country = st.selectbox("Country", ["United States", "Canada", "Peru", "Bolivia", "Brazil", "Czech Republic", "Netherlands", "Italy", "Germany", "Ukraine", "United Kingdom", "France", "Republic of the Congo", "Mongolia", "Japan", "Maldives"])
         state = st.selectbox("State/Province", ["Texas", "Missouri", "New York", "Colorado", "North Carolina", "Oregon", "Florida", "Louisiana", "Michigan", "California", "Alaska", "Mississippi", "Alberta", "Loreto", "Beni", "Amazonas", "Central Bohemia", "North Holland", "Lazio", "Bavaria", "Dnipro", "England", "Île-de-France", "Pool", "Khövsgöl", "Wakayama", "Kaafu"])
 
