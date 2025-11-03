@@ -84,7 +84,7 @@ You will see the interface to start logging your data.
 
 **Developed by:**  
 Jose Pablo Barrantes Jiménez  
-Founder and Director of **Evidens CR — Data, Analytics & Digital Transformation**
+Founder and Director of **Evidens CR**
 
 **Email:** jospaba12@gmail.com  
 **Phone:** +506 8338 9426  
