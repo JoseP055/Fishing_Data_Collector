@@ -88,4 +88,4 @@ Founder and Director of **Evidens CR**
 
 **Email:** jospaba12@gmail.com  
 **Phone:** +506 8338 9426  
-**LinkedIn:** [linkedin.com/in/josep55](https://linkedin.com/in/josep55)
+**LinkedIn:** [linkedin.com/in/josep55](https://linkedin.com/in/josep55).
