@@ -235,7 +235,7 @@ if submitted:
     st.success(f"Catch #{next_id} saved successfully!")
     st.rerun()
 
-# ===== Data View =====
+# ===== Data View 2 =====
 ensure_file(DATA_PATH)
 try:
     df_show = pd.read_excel(DATA_PATH, engine="openpyxl", sheet_name=SHEET_NAME)
